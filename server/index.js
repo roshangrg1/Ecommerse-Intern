@@ -14,6 +14,7 @@ import config from "./config/index"
 
         app.on('error', (err)=>  {
             console.log("Error: ", err);
+            throw err;
         })
 
         const onListening = () =>{
