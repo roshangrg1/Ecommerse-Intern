@@ -94,3 +94,23 @@ export const login = tryCatchHandler (async(req,res) =>{
 
     throw new CustomError('Invalid credentials - pass', 400)
 })
+
+/***************************************************************************************
+ * @LOGOUT
+ * @route http://localhost:4000/api/auth/logout
+ * @description: User signout by clearing cookie
+ * @parameters 
+ * @return success message
+ ***************************************************************************************/
+
+export const logout = tryCatchHandler(async (_req, res) =>{
+    // res.clearCookie()
+    res.cookie("token", null, {
+        expires: new Date(Date.now()),
+        httpOnly: true
+    })
+    res.status(200).json({
+        success: true,
+        message: "Logged Out"
+    })
+})
