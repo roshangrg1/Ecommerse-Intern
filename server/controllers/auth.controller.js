@@ -4,6 +4,8 @@ import CustomError from '../utils/customError'
 
 import mailHelper from '../utils/mailHelper'
 
+import crypto from 'crypto'
+
 
 
 
@@ -163,4 +165,57 @@ export const forgotPassword = trycatchHandler(async (req,res) =>{
         throw new CustomError(error.message || 'Email sent failure')
     }
 })
+
+/***************************************************************************************
+ * @RESET_PASSWORD
+ * @route http://localhost:4000/api/auth/password/reser/:resetPasswordToken
+ * @description: User will be able to reset password based on url token
+ * @parameters token from url, password and confirmpass
+ * @return User object
+ ***************************************************************************************/
+
+
+export const resetPassword = tryCatchHandler(async(req, res) =>{
+    const {token: resetToken} = req.params
+    const {password , confirmPassword} = req.body
+
+
+    const resetPasswordToken =crypto
+    .createHash('')
+    .update(resetToken)
+    .digest('hex')
+
+    const user= await User.findOne({
+        forgotPasswordToken: resetPasswordToken,
+        forgotPasswordExpiry: {$gt:Date.now()}
+    })
+
+    if(!user){
+        throw new CustomError('password token is invalid or expired', 400)
+    }
+
+    if (password !== confirmPassword){
+        throw new CustomError(' Password and confirm Password does not matched', 400)
+    }
+
+    user.password = password
+    user.forgotPasswordToken = undefined
+    user.forgotPasswordExpiry= undefined
+
+    await user.save()
+
+    // create token and send as response 
+    const token = user.getJwtToken()
+    user.password = undefined
+    
+    // helper method for cookie can be added
+    res.cookie('token',token , cookieOptions)
+
+    res.status(200).json({
+        success:true,
+        user
+    })
+})
+
+
 
