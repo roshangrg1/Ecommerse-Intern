@@ -2,6 +2,8 @@ import User from '../models/user.schema'
 import tryCatchHandler from '../services/tryCatchHandler'
 import CustomError from '../utils/customError'
 
+import mailHelper from '../utils/mailHelper'
+
 
 
 
@@ -73,7 +75,7 @@ export const login = tryCatchHandler (async(req,res) =>{
         throw new CustomError('Please fill all fields', 400)
     }
 
-    const user= User.findOne({email}).select("+password")
+    const user= await User.findOne({email}).select("+password")
 
     if(!user){
         throw new CustomError('Invalid credentials', 400)
@@ -114,3 +116,51 @@ export const logout = tryCatchHandler(async (_req, res) =>{
         message: "Logged Out"
     })
 })
+
+/***************************************************************************************
+ * @FORGOT_PASSWORD
+ * @route http://localhost:4000/api/auth/password/forgot
+ * @description: User will submit email and we will generate a token
+ * @parameters email
+ * @return success message - email send
+ ***************************************************************************************/
+
+
+export const forgotPassword = trycatchHandler(async (req,res) =>{
+    const {email} = req.body
+
+    const user = await User.findOne({email})
+
+    if (!user){
+        throw new CustomError("User not found", 404)
+    }
+    const resetToken = user.generateForgotPasswordToken()
+
+    await user.save({validateBeforeSave : false})
+
+    const resetUrl =
+    `${req.protocol}://${req.get("host")}/api/auth/password/reset/${resetToken}`
+
+    const text = `Your password reset url is  \n\n ${resetUrl}\n\n`
+
+    try {
+        await mailHelper({
+            email:user.email,
+            subject: "Password reset email for website",
+            text:text,
+        })
+        res.status(200).json({
+            success:true,
+            message: `Email send to ${user.email}`
+        })
+    } catch (error) {
+        // rollback - clear fields and save.
+        user.forgotPasswordToken = undefined
+        user.forgotPasswordExpiry= undefined
+
+        user.save({validateBeforeSave: false})
+
+        throw new CustomError(error.message || 'Email sent failure')
+    }
+})
+
