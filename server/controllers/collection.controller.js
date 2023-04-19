@@ -68,7 +68,32 @@ export const updateCollection = tryCatchHandler(async (req, res) =>{
     res.status(200).json({
         success:true,
         message:"Collection updated successfully",
-        updateCollection
+        updatedCollection
 
+    })
+})
+
+/***************************************************************************************
+ * @DELETE_COLLECTION
+ * @route http://localhost:4000/api/collection
+ * @description: FOR DELETING COLLECTION
+ * @parameters 
+ * @return COLLECTION
+ ***************************************************************************************/
+
+export const deleteCollection = tryCatchHandler(async (req, res)=>{
+    const {id:collectionId}= req.params
+
+    const collectionToDelete= await Collection.findOneAndDelete(collectionId);
+
+    if(!collectionToDelete){
+        throw new CustomError("Collection not found", 400)
+    }
+        collectionToDelete.remove()
+    // send response to frontend
+    res.status(200).json({
+        success:true,
+        message: "collection deleted sucessfully",
+        // collectionToDelete1
     })
 })
