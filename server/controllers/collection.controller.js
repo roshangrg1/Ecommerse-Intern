@@ -97,3 +97,23 @@ export const deleteCollection = tryCatchHandler(async (req, res)=>{
         // collectionToDelete1
     })
 })
+
+/***************************************************************************************
+ * @GET_ALL_COLLECTION
+ * @route http://localhost:4000/api/collection
+ * @description: TO READ ALL THE COLLECTION
+ * @parameters 
+ * @return COLLECTION
+ ***************************************************************************************/
+export const getAllCollections = tryCatchHandler(async ( req, res)=>{
+    const collections = await Collection.find()
+
+    if(!collections){
+        throw new CustomError("No Collection found", 400)
+    }
+
+    res.status(200).json({
+        success:true,
+        collections
+    })
+})
