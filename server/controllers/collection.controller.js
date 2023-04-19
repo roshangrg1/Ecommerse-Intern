@@ -2,6 +2,14 @@ import Collection from '../models/collection.schema'
 import tryCatchHandler from '../services/tryCatchHandler'
 import CustomError from '../utils/customError'
 
+/***************************************************************************************
+ * @Create_COLLECTION
+ * @route http://localhost:4000/api/collection
+ * @description: FOR CREATING COLLECTION
+ * @parameters 
+ * @return COLLECTION
+ ***************************************************************************************/
+
 export const createCollection = tryCatchHandler(async (req, res)=>{
     // take name from frontend.
     const {name}= req.body
@@ -11,7 +19,7 @@ export const createCollection = tryCatchHandler(async (req, res)=>{
     }
 
     //add this name to database
-     const collection =Collection.create ({
+     const collection = await Collection.create ({
         name
     })
 
@@ -23,7 +31,44 @@ export const createCollection = tryCatchHandler(async (req, res)=>{
     })
 })
 
-export const readCollection = tryCatchHandler(async (req, res) =>{
 
+/***************************************************************************************
+ * @UPDATE_COLLECTION
+ * @route http://localhost:4000/api/collection
+ * @description: FOR EDITING / UPDATING COLLECTION
+ * @parameters 
+ * @return COLLECTION
+ ***************************************************************************************/
+export const updateCollection = tryCatchHandler(async (req, res) =>{
+    // existing value to be updates
+    const {id:CollectionId} = req.params
+    // new value to get updated
+    const {name}= req.body
+
+    if(!name){
+        throw new CustomError("Collection name is required", 400)
+    }
     
+    let updatedCollection = await Collection.findByIdAndUpdate(
+        CollectionId,
+        {
+            name
+        },
+        {
+            new:true,
+            runValidators:true
+        }
+    )
+
+    if(!updateCollection){
+        throw new CustomError("Collection not found", 400)
+    }
+
+    // send response to frontend
+    res.status(200).json({
+        success:true,
+        message:"Collection updated successfully",
+        updateCollection
+
+    })
 })
