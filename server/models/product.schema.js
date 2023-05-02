@@ -15,11 +15,16 @@ const productSchema = new mongoose.Schema(
         },
         description: {
             type: String,
+            required: [true, "Please provide product description"]
             // use some form of editor  - personal challange
           
         },
         photos:[
             {
+                id : {
+                    type: String,
+                    required: true
+                },
                 secure_url: {
                     type: String,
                     required: true
