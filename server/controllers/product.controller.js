@@ -93,3 +93,51 @@ export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
     })
 })
 
+export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
+    const product = await  Product.find(req.params.id);
+
+    if (!product){
+        return next (new CustomError("No product found with this id", 400))
+    }
+
+    let imagesArray =[]
+
+    if(req.files){
+        // destroy the existing image
+        
+        for (let i = 0; i < array.length; i++) {
+            const res = await cloudinary.uploader.destroy(product.photos[i].id)
+            
+        }
+        // upload and save the images
+
+        for(let i=0; i< req.files.photos.length; i++){
+            // const element = req.files.photos[i];
+            // cloudinary
+                let result = await cloudinary.uploader.upload(req.files.photos[i].
+                tempFilePath, {
+                    folder: 'products'
+                }
+                );
+    
+                imagesArray.push({
+                    id: result.public_id,
+                    secure_url:result.secure_url
+                })
+            }
+    }
+
+    req.body.photos = imagesArray
+
+    product = await Product.findByIdAndUpdate(req.param.id, req.body{
+        new: true,
+        runValidator: true,
+        useFindAndModify: false
+    })
+
+    res.status(200).json({
+        success: true,
+        product,
+    })
+})
+
