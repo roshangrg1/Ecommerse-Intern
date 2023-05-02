@@ -11,7 +11,11 @@ const config = {
     SMTP_MAIL_PORT:process.env.SMTP_MAIL_PORT,
     SMTP_MAIL_USERNAME: process.env.SMTP_MAIL_USERNAME,
     SMTP_MAIL_PASSWORD: process.env.SMTP_MAIL_PASSWORD,
-    SMTP_MAIL_EMAIL: process.env.SMTP_MAIL_EMAIL
+    SMTP_MAIL_EMAIL: process.env.SMTP_MAIL_EMAIL,
+
+    cloud_name: process.env.cloud_name,
+    api_key: process.env.api_key,
+    api_secret: process.env.api_secret,
 
 }
 
