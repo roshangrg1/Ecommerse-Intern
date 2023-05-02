@@ -3,6 +3,7 @@ import Product from '../models/product.schema'
 import fs from 'fs'
 import tryCatchHandler from '../services/tryCatchHandler'
 import WhereClause from '../utils/whereClause';
+import CustomError from '../utils/customError';
 const cloudinary = require("cloudinary").v2
 
 // create product --admin
@@ -66,6 +67,21 @@ export const getAllProduct= tryCatchHandler(async(req,res, next) =>{
     })
 })
 
+export const getOneProduct= tryCatchHandler(async(req,res, next) =>{
+    const product = await Product.findById(req.params.id)
+
+    if(!product){
+        return next(new CustomError('No product found with this id', 400))
+    }
+  
+    res.status(200).json({
+        success:true,
+        product
+
+    })
+})
+
+
 export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
     const products = await Product.find()
 
@@ -76,3 +92,4 @@ export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
 
     })
 })
+
