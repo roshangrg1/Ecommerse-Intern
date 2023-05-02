@@ -65,3 +65,14 @@ export const getAllProduct= tryCatchHandler(async(req,res, next) =>{
         totalcountProduct,
     })
 })
+
+export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
+    const products = await Product.find()
+
+
+    res.status(200).json({
+        success:true,
+        products
+
+    })
+})
