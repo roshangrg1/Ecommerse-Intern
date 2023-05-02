@@ -42,3 +42,26 @@ export const createProduct = tryCatchHandler(async(req, res, next)=>{
     })
 });
 
+export const getAllProduct= tryCatchHandler(async(req,res, next) =>{
+
+    const resultPerPage = 6
+    const totalcountProduct = await Product.countDocuments()
+
+    const products = new WhereClause(Product.find(), req.query).search().filter();
+
+    const filteredProductNumber = products.length
+
+    // products.limit().skip()
+
+    products.pager(resultPerPage)
+    products = await products.base
+    
+   
+
+    res.status(200).json({
+        success: true,
+        products,
+        filteredProductNumber,
+        totalcountProduct,
+    })
+})
