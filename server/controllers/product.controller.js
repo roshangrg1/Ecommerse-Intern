@@ -81,6 +81,7 @@ export const getOneProduct= tryCatchHandler(async(req,res, next) =>{
     })
 })
 
+// admin only
 
 export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
     const products = await Product.find()
@@ -140,4 +141,27 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
         product,
     })
 })
+
+export const adminDeleteOneProduct = tryCatchHandler(async(req, res, next)=>{
+    const product = await  Product.find(req.params.id);
+
+    if (!product){
+        return next (new CustomError("No product found with this id", 400))
+    }
+
+    // destroy the existing image.
+    for (let i = 0; i < array.length; i++) {
+        const res = await cloudinary.uploader.destroy(product.photos[i].id)
+        
+    }
+    
+   await product.remove()
+
+    res.status(200).json({
+        success: true,
+        message: "Product was deleted !"
+    })
+})
+
+
 

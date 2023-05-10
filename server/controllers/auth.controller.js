@@ -1,8 +1,8 @@
-import User from '../models/user.schema'
-import tryCatchHandler from '../services/tryCatchHandler'
-import CustomError from '../utils/customError'
+import User from '../models/user.schema.js'
+import tryCatchHandler from '../services/tryCatchHandler.js'
+import CustomError from '../utils/customError.js'
 
-import mailHelper from '../utils/mailHelper'
+import mailHelper from '../utils/mailHelper.js'
 
 import crypto from 'crypto'
 
@@ -128,9 +128,9 @@ export const logout = tryCatchHandler(async (_req, res) =>{
  ***************************************************************************************/
 
 
-export const forgotPassword = trycatchHandler(async (req,res) =>{
+export const forgotPassword = tryCatchHandler(async (req,res) =>{
     const {email} = req.body
-
+    // check email for null or '' 
     const user = await User.findOne({email})
 
     if (!user){
@@ -160,7 +160,7 @@ export const forgotPassword = trycatchHandler(async (req,res) =>{
         user.forgotPasswordToken = undefined
         user.forgotPasswordExpiry= undefined
 
-        user.save({validateBeforeSave: false})
+        await user.save({validateBeforeSave: false})
 
         throw new CustomError(error.message || 'Email sent failure')
     }
@@ -228,7 +228,7 @@ export const resetPassword = tryCatchHandler(async(req, res) =>{
  * @return User object
  ***************************************************************************************/
 
-export const getProfile = tryCatchHandler(async(res, res)=>{
+export const getProfile = tryCatchHandler(async(req, res)=>{
     // req.user
     const {user} =  req
     if (!user){

@@ -1,9 +1,9 @@
-import User from '../models/user.schema'
+import User from '../models/user.schema.js'
 import JWT from 'jsonwebtoken'
-import tryCatchHandler from '../services/tryCatchHandler'
-import CustomError from '../utils/customError'
+import tryCatchHandler from '../services/tryCatchHandler.js'
+import CustomError from '../utils/customError.js'
 
-import config from "../config/index"
+import config from "../config/index.js"
 
 export const isLoggedIn = tryCatchHandler(async(req,res,next)=>{
     let token;
