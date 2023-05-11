@@ -10,7 +10,7 @@ export const isLoggedIn = tryCatchHandler(async(req,res,next)=>{
 
     if(
         req.cookies.token || 
-        (req.headers.authorization && req.headers.authorization.starstWith('Bearer')))
+        (req.headers.authorization && req.headers.authorization.startsWith('Bearer')))
         {
             token = req.cookies.token || req.headers.authorization.split(" ") [1]
         }
