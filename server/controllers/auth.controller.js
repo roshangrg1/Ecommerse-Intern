@@ -255,7 +255,7 @@ export const adminAllUser = tryCatchHandler(async (req, res, next) => {
     });
   });
 
-  exports.admingetOneUser = BigPromise(async (req, res, next) => {
+  export const admingetOneUser = BigPromise(async (req, res, next) => {
     // get id from url and get user from database
     const user = await User.findById(req.params.id);
   
