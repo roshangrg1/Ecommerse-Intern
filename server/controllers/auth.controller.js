@@ -240,3 +240,20 @@ export const getProfile = tryCatchHandler(async(req, res)=>{
         user
     })
 })
+
+
+// admin routes
+
+export const adminAllUser = tryCatchHandler(async (req, res, next) => {
+    // select all users
+    const users = await User.find();
+  
+    // send all users
+    res.status(200).json({
+      success: true,
+      users,
+    });
+  });
+  
+
+  
