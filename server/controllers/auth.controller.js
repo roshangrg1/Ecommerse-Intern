@@ -255,7 +255,7 @@ export const adminAllUser = tryCatchHandler(async (req, res, next) => {
     });
   });
 
-  export const admingetOneUser = BigPromise(async (req, res, next) => {
+export const admingetOneUser = tryCatchHandler(async (req, res, next) => {
     // get id from url and get user from database
     const user = await User.findById(req.params.id);
   
@@ -269,6 +269,47 @@ export const adminAllUser = tryCatchHandler(async (req, res, next) => {
       user,
     });
   });
+  
+  export const adminUpdateOneUserDetails = tryCatchHandler(async (req, res, next) => {
+    // add a check for email and name in body
+  
+    // get data from request body
+    const newData = {
+      name: req.body.name,
+      email: req.body.email,
+      roles: req.body.roles,
+    };
+  
+    // update the user in database
+    const user = await User.findByIdAndUpdate(req.params.id, newData, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+  
+    res.status(200).json({
+      success: true,
+    });
+  });
+  
+  export const adminDeleteOneUser = tryCatchHandler(async (req, res, next) => {
+    // get user from url
+    const user = await User.findById(req.params.id);
+  
+    if (!user) {
+      return next(new CustomError("No Such user found", 401));
+    }
+  
+  
+  
+    // remove user from databse
+    await user.deleteOne();
+  
+    res.status(200).json({
+      success: true,
+    });
+  });
+  
   
 
   
