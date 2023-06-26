@@ -22,11 +22,14 @@ app.use(morgan('tiny'))
 // import all routes here 
 import  home from './routes/home.js'
 import auth from './routes/auth.js'
+import product from './routes/product.js'
 
 
 
 // router middleware
-app.use('/api/v1/' , home)
+app.use('/api/v1/', home)
 app.use('/api/v1/', auth )
+app.use('/api/v1/', product )
+
 
 export default app

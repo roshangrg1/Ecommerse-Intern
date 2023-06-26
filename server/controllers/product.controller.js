@@ -1,10 +1,10 @@
-import Product from '../models/product.schema'
+import Product from '../models/product.schema.js'
 
 import fs from 'fs'
-import tryCatchHandler from '../services/tryCatchHandler'
-import WhereClause from '../utils/whereClause';
-import CustomError from '../utils/customError';
-const cloudinary = require("cloudinary").v2
+import tryCatchHandler from '../services/tryCatchHandler.js'
+import WhereClause from '../utils/whereClause.js';
+import CustomError from '../utils/customError.js';
+import { v2 as cloudinary } from "cloudinary";
 
 // create product --admin
 export const createProduct = tryCatchHandler(async(req, res, next)=>{
@@ -130,7 +130,7 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
 
     req.body.photos = imagesArray
 
-    product = await Product.findByIdAndUpdate(req.param.id, req.body{
+    product = await Product.findByIdAndUpdate(req.param.id, req.body,{
         new: true,
         runValidator: true,
         useFindAndModify: false

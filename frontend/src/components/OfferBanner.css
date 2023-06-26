@@ -1,0 +1,10 @@
+.banner{
+    height: 40px;
+    background: #000000;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 16px;
+}

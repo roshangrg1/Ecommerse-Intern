@@ -1,0 +1,24 @@
+.navbar{
+    height: 60px;
+    background: #F18D9E;
+    color: white;
+    display:flex;
+    align-items: center;
+    
+}
+.left-navbar{
+    flex: 1;
+}
+.middle-navbar{
+    flex: 1;
+    text-align: center;
+    font-size: 40px;
+}
+.right-navbar{
+    flex: 1;
+    display: flex;
+    /* align-items: center; */
+    justify-content: flex-end;
+    gap: 20px;
+    text-transform: uppercase;
+}
