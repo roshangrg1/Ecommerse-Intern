@@ -1,7 +1,7 @@
 import express from 'express'
 const router = express.Router();
 
-import { signUp, login, logout, getProfile, adminAllUser} from '../controllers/auth.controller.js'
+import { signUp, login, logout, getProfile, adminAllUser, admingetOneUser,adminUpdateOneUserDetails,adminDeleteOneUser} from '../controllers/auth.controller.js'
 
 import { isLoggedIn, customRole } from '../middlewares/auth.middleware.js';
 import AuthRoles from '../utils/authRoles.js';
@@ -16,6 +16,11 @@ router.get('/profile', isLoggedIn, getProfile)
 //admin only routes
 router.route("/admin/users").get(isLoggedIn, customRole(AuthRoles.ADMIN), adminAllUser);
 
+router
+  .route("/admin/user/:id")
+  .get(isLoggedIn, customRole(AuthRoles.ADMIN), admingetOneUser)
+  .put(isLoggedIn, customRole(AuthRoles.ADMIN), adminUpdateOneUserDetails)
+  .delete(isLoggedIn, customRole(AuthRoles.ADMIN), adminDeleteOneUser);
 
 
 
