@@ -3,7 +3,15 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 
+import cloudinary from 'cloudinary'
+import config from './config/index.js'
+import fileUpload from 'express-fileupload'
 
+ cloudinary.config({
+    cloud_name: config.CLOUDINARY_NAME,
+    api_key: config.CLOUDINARY_API_KEY,
+    api_secret: config.CLOUDINARY_API_SECRET,
+  })
 
 
 const app = express()
@@ -18,6 +26,12 @@ app.use(cookieParser())
 
 // Morgon logger
 app.use(morgan('tiny'))
+
+// Note that this option available for versions 1.0.0 and newer. 
+app.use(fileUpload({
+    useTempFiles : true,
+    tempFileDir : '/tmp/'
+}));
 
 // import all routes here 
 import  home from './routes/home.js'
