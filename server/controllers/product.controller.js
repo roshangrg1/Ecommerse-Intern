@@ -1,12 +1,51 @@
 import Product from '../models/product.schema.js'
-
-import fs from 'fs'
 import tryCatchHandler from '../services/tryCatchHandler.js'
 import WhereClause from '../utils/whereClause.js';
 import CustomError from '../utils/customError.js';
-import { v2 as cloudinary } from "cloudinary";
+import cloudinary  from "cloudinary";
 
-// create product --admin
+
+// All User
+
+export const getAllProduct = tryCatchHandler(async (req, res, next) => {
+    const resultPerPage = 6;
+    const totalcountProduct = await Product.countDocuments();
+  
+    const productsObj = new WhereClause(Product.find(), req.query)
+      .search()
+      .filter();
+  
+    let products = await productsObj.base;
+    const filteredProductNumber = products.length;
+  
+    //products.limit().skip()
+  
+    productsObj.pager(resultPerPage);
+    products = await productsObj.base.clone();
+  
+    res.status(200).json({
+      success: true,
+      products,
+      filteredProductNumber,
+      totalcountProduct,
+    });
+  });
+  
+export const getOneProduct= tryCatchHandler(async(req,res, next) =>{
+    const product = await Product.findById(req.params.id)
+
+    if(!product){
+        return next(new CustomError('No product found with this id', 400))
+    }
+  
+    res.status(200).json({
+        success:true,
+        product
+
+    })
+})
+
+// admin only
 export const createProduct = tryCatchHandler(async(req, res, next)=>{
 
     // images
@@ -20,7 +59,7 @@ export const createProduct = tryCatchHandler(async(req, res, next)=>{
         for(let i=0; i< req.files.photos.length; i++){
         // const element = req.files.photos[i];
         // cloudinary
-            let result = await cloudinary.uploader.upload(req.files.photos[i].
+            let result = await cloudinary.v2.uploader.upload(req.files.photos[i].
             tempFilePath, {
                 folder: 'products'
             }
@@ -43,46 +82,6 @@ export const createProduct = tryCatchHandler(async(req, res, next)=>{
     })
 });
 
-export const getAllProduct= tryCatchHandler(async(req,res, next) =>{
-
-    const resultPerPage = 6
-    const totalcountProduct = await Product.countDocuments()
-
-    const products = new WhereClause(Product.find(), req.query).search().filter();
-
-    const filteredProductNumber = products.length
-
-    // products.limit().skip()
-
-    products.pager(resultPerPage)
-    products = await products.base
-    
-   
-
-    res.status(200).json({
-        success: true,
-        products,
-        filteredProductNumber,
-        totalcountProduct,
-    })
-})
-
-export const getOneProduct= tryCatchHandler(async(req,res, next) =>{
-    const product = await Product.findById(req.params.id)
-
-    if(!product){
-        return next(new CustomError('No product found with this id', 400))
-    }
-  
-    res.status(200).json({
-        success:true,
-        product
-
-    })
-})
-
-// admin only
-
 export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
     const products = await Product.find()
 
@@ -95,7 +94,7 @@ export const adminGetAllProduct = tryCatchHandler(async (req, res , next)=>{
 })
 
 export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
-    const product = await  Product.find(req.params.id);
+    let product = await  Product.findById(req.params.id);
 
     if (!product){
         return next (new CustomError("No product found with this id", 400))
@@ -106,8 +105,8 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
     if(req.files){
         // destroy the existing image
         
-        for (let i = 0; i < array.length; i++) {
-            const res = await cloudinary.uploader.destroy(product.photos[i].id)
+        for (let i = 0; i < product.photos.length; i++) {
+            const res = await cloudinary.v2.uploader.destroy(product.photos[i].id)
             
         }
         // upload and save the images
@@ -115,9 +114,9 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
         for(let i=0; i< req.files.photos.length; i++){
             // const element = req.files.photos[i];
             // cloudinary
-                let result = await cloudinary.uploader.upload(req.files.photos[i].
+                let result = await cloudinary.v2.uploader.upload(req.files.photos[i].
                 tempFilePath, {
-                    folder: 'products'
+                    folder: 'products',
                 }
                 );
     
@@ -130,9 +129,12 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
 
     req.body.photos = imagesArray
 
-    product = await Product.findByIdAndUpdate(req.param.id, req.body,{
+ 
+
+
+    product = await Product.findByIdAndUpdate(req.params.id, req.body,{
         new: true,
-        runValidator: true,
+        runValidators: true,
         useFindAndModify: false
     })
 
@@ -143,19 +145,19 @@ export const adminUpdateOneProduct = tryCatchHandler(async(req, res, next)=>{
 })
 
 export const adminDeleteOneProduct = tryCatchHandler(async(req, res, next)=>{
-    const product = await  Product.find(req.params.id);
+    const product = await  Product.findById(req.params.id);
 
     if (!product){
         return next (new CustomError("No product found with this id", 400))
     }
 
     // destroy the existing image.
-    for (let i = 0; i < array.length; i++) {
+    for (let i = 0; i < product.photos.length; i++) {
         const res = await cloudinary.uploader.destroy(product.photos[i].id)
         
     }
     
-   await product.remove()
+   await product.deleteOne()
 
     res.status(200).json({
         success: true,
