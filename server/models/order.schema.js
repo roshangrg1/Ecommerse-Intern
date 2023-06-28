@@ -1,54 +1,91 @@
 import mongoose from 'mongoose';
 
-const orderSchema = new mongoose.Schema(
-    {
-        products:{
-            type:[
-                {
-                    productId:{
-                        type: mongoose.Schema.Types.ObjectId,
-                        ref: "Product",
-                        required: true
-                    },
-                    count: Number,
-                    price: Number
-                }
-            ],
-            required : true
-        },
-        user:{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User",
-            required: true
-        },
-        address:{
-            type: String,
-            required: true,
-        },
-        phoneNumber:{
-            type: Number,
-            required: true,
-        },
-        amount:{
-            type: Number,
-            required: true
-        },
-        coupon: String,
-        transactionId: String,
-        status:{
-            type: String,
-            enum: ["ORDERED" , "SHIPPED","DELIVERED", "CANCELLED"],
-            default: "ORDERED",
-
-            // CAN WE IMPROVE THIS?
-        },
-
-        // PAYEMENT mODE : UPI , CREDIT CARD  OR WALLER , COD
+const orderSchema = new mongoose.Schema({
+    shippingInfo: {
+      address: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      phoneNo: {
+        type: String,
+        required: true,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
     },
-    {
-        timestamps: true
-    }
-)
+    user: {
+      type: mongoose.Schema.ObjectId, //mongoose.Schema.Types.ObjectId
+      ref: "User",
+      required: true,
+    },
+    orderItems: [
+      {
+        name: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        product: {
+          type: mongoose.Schema.ObjectId, //mongoose.Schema.Types.ObjectId
+          ref: "Product",
+          required: true,
+        },
+      },
+    ],
+    paymentInfo: {
+      id: {
+        type: String,
+      },
+    },
+    taxAmount: {
+      type: Number,
+      required: true,
+    },
+    shippingAmount: {
+      type: Number,
+      required: true,
+    },
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    orderStatus: {
+      type: String,
+      required: true,
+      default: "processing",
+    },
+    deliveredAt: {
+      type: Date,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  });
 
-
-export default mongoose.model("Order", orderSchema)
+  export default mongoose.model("Order", orderSchema)
