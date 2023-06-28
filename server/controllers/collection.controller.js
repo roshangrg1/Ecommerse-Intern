@@ -1,6 +1,6 @@
-import Collection from '../models/collection.schema'
-import tryCatchHandler from '../services/tryCatchHandler'
-import CustomError from '../utils/customError'
+import Collection from '../models/collection.schema.js'
+import tryCatchHandler from '../services/tryCatchHandler.js'
+import CustomError from '../utils/customError.js'
 
 /***************************************************************************************
  * @Create_COLLECTION
@@ -60,7 +60,7 @@ export const updateCollection = tryCatchHandler(async (req, res) =>{
         }
     )
 
-    if(!updateCollection){
+    if(!updatedCollection){
         throw new CustomError("Collection not found", 400)
     }
 
@@ -89,7 +89,7 @@ export const deleteCollection = tryCatchHandler(async (req, res)=>{
     if(!collectionToDelete){
         throw new CustomError("Collection not found", 400)
     }
-        collectionToDelete.remove()
+        collectionToDelete.deleteOne()
     // send response to frontend
     res.status(200).json({
         success:true,
