@@ -31,9 +31,12 @@ const productSchema = new mongoose.Schema(
                 }
             }
         ],
+
+        // updated at the time of order controller.
         stock: {
             type: Number,
-            default: 0
+            // default: 0
+            required: [true, "Please a number in stock"]
         },
         sold: {
             type: Number,

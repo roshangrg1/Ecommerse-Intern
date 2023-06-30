@@ -38,6 +38,7 @@ import  home from './routes/home.js'
 import auth from './routes/auth.js'
 import product from './routes/product.js'
 import collection from './routes/collection.js'
+import order from './routes/order.js'
 
 
 
@@ -46,6 +47,7 @@ app.use('/api/v1/', home)
 app.use('/api/v1/', auth )
 app.use('/api/v1/', product )
 app.use('/api/v1/', collection )
+app.use('/api/v1/', order)
 
 
 export default app
