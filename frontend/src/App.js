@@ -1,22 +1,26 @@
-
-import './App.css';
-import Header from './component/layout/Header';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Footer from './component/layout/footer/Footer';
-import Home from './component/Home/Home'
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./component/Home/Home";
+import About from "./component/About/About";
+import Products from "./component/Products/Products";
+import Contact from "./component/Contact/Contact";
+import SingleProduct from "./component/SingleProduct/SingleProduct";
+import Cart from "./component/Cart/Cart";
+import Error from "./component/Error/Error";
 
 function App() {
   return (
     <BrowserRouter>
-
-      <Header />
       <Routes>
-        <Route path='/' exact element={<Home/>} />
-        <Route path='/video/:id' element={''} />
-        <Route path='/channel/:id' element={''} />
-        <Route path='/search/:searchTerm' element={''} />
+        <Route path="/" exact element={<Home />} />
+        <Route path="/about" exact element={<About />} />
+        <Route path="/products" exact element={<Products />} />
+        <Route path="/contact" exact element={<Contact />} />
+        <Route path="/product/:id" exact element={<SingleProduct />} />
+        <Route path="/cart" exact element={<Cart />} />
+        <Route path="*" exact element={<Error/>} />
+
       </Routes>
-      <Footer />
     </BrowserRouter>
   );
 }
