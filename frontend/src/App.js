@@ -1,27 +1,25 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./component/Home/Home";
-import About from "./component/About/About";
-import Products from "./component/Products/Products";
-import Contact from "./component/Contact/Contact";
-import SingleProduct from "./component/SingleProduct/SingleProduct";
-import Cart from "./component/Cart/Cart";
-import Error from "./component/Error/Error";
-
+import Header from "./component/layout/Header/Header";
+import Footer from "./component/layout/Footer/Footer";
 function App() {
   return (
+
     <BrowserRouter>
+      <Header/>
       <Routes>
-        <Route path="/" exact element={<Home />} />
-        <Route path="/about" exact element={<About />} />
+        {/* <Route path="/" exact element={<Header />} /> */}
+        {/* <Route path="/about" exact element={<About />} />
         <Route path="/products" exact element={<Products />} />
         <Route path="/contact" exact element={<Contact />} />
         <Route path="/product/:id" exact element={<SingleProduct />} />
         <Route path="/cart" exact element={<Cart />} />
-        <Route path="*" exact element={<Error/>} />
+        <Route path="*" exact element={<Error/>} /> */}
 
       </Routes>
+      <Footer/>
     </BrowserRouter>
+
   );
 }
 
