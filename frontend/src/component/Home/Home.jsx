@@ -1,5 +1,6 @@
 import React from "react";
 import Product from "../Product/Product";
+import MetaData from "../layout/MetaData";
 const product ={
     name:"silencer",
     photos: [{url: "https://images.pexels.com/photos/12350402/pexels-photo-12350402.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"}],
@@ -13,6 +14,7 @@ const Home = () => {
   };
   return (
     <>
+    <MetaData title='Home page working'/>
       <div
         style={backgroundStyle}
         className=" bg-cover bg-center  h-[40vh] text-white py-24 px-10 object-fill"
