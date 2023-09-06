@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Folder Structure
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This document outlines the folder structure of our project, providing an overview of the organization and purpose of each directory. A well-structured project directory helps maintain code readability, modularity, and scalability.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [src/](#src)
+- [public/](#public)
 
-### `npm start`
+## src/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The `src/` directory is where most of our project's source code resides. It contains subdirectories and files related to the application's functionality and presentation.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **components/**: This directory houses reusable UI components. These components are primarily responsible for rendering the user interface and are often stateless. Keeping them separate promotes code reusability and maintainability.
 
-### `npm test`
+- **features/**: This is the heart of our application. It contains subdirectories for each major feature of our application, such as product management, shopping cart, user authentication, and more. Each feature directory typically includes the following:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  - **[feature]Slice.js**: A Redux Toolkit slice specific to the feature. It defines the initial state, actions, and reducers for managing the feature's data and behavior.
 
-### `npm run build`
+  - **[Feature]List.js**: A component responsible for listing items related to the feature, such as products, orders, or users.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  - **[Feature]Detail.js**: A component for displaying detailed information about a single item within the feature.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  - Other components and files related to the feature.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **app/**: This directory contains application-level components and configuration. It typically includes:
 
-### `npm run eject`
+  - **store.js**: Configuration of the Redux store using Redux Toolkit. This is where all feature slices are combined into a root reducer.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  - **rootReducer.js**: The root reducer that combines reducers from all feature slices.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+  - Other app-level components that don't belong to a specific feature but are essential for the application's functionality.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- **services/**: This directory contains functions responsible for interacting with external services, APIs, or handling data-related tasks. For example, you might have an `api.js` file that centralizes API calls.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- **assets/**: Static assets such as images, fonts, and global styles are stored here. This directory helps keep the project organized and allows easy access to assets throughout the application.
 
-## Learn More
+- **utils/**: Utility functions that can be used across different parts of the application. These functions help streamline common tasks and maintain code consistency.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- **routes/**: If the application uses client-side routing (e.g., React Router), this directory can house routing configuration and components responsible for rendering different views based on the URL.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **index.js**: The entry point of the application, where we typically render the root component.
 
-### Code Splitting
+- **App.js**: The main application component that serves as the container for routing and other high-level application logic.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## public/
 
-### Analyzing the Bundle Size
+The `public/` directory contains publicly accessible files that are served as-is by the web server. It typically includes:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **index.html**: The main HTML template for the application. This file may include placeholders for dynamically injected content.
 
-### Making a Progressive Web App
+- Other static assets like images, favicons, and manifest files.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+By maintaining a well-organized folder structure, we aim to make the project more manageable, maintainable, and understandable. Each directory has a specific purpose and helps separate concerns, facilitating collaboration and future development.
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Folder and file Structure
+``` src/
+|-- components/
+|   |-- ProductList.js
+|   |-- ProductDetail.js
+|   |-- ShoppingCart.js
+|   |-- ...
+|
+|-- features/
+|   |-- product/
+|   |   |-- productSlice.js
+|   |   |-- ProductList.js
+|   |   |-- ProductDetail.js
+|   |   |-- ProductItem.js
+|   |   |-- ...
+|   |
+|   |-- cart/
+|   |   |-- cartSlice.js
+|   |   |-- Cart.js
+|   |   |-- CartItem.js
+|   |   |-- ...
+|   |
+|   |-- user/
+|   |   |-- userSlice.js
+|   |   |-- UserProfile.js
+|   |   |-- ...
+|
+|-- app/
+|   |-- store.js
+|   |-- rootReducer.js
+|   |-- ...
+|
+|-- services/
+|   |-- api.js
+|   |-- ...
+|
+|-- assets/
+|   |-- images/
+|   |-- styles/
+|
+|-- utils/
+|   |-- ...
+|
+|-- routes/
+|   |-- AppRouter.js
+|   |-- ...
+|
+|-- index.js
+|-- App.js
+|-- ...
+|
+|-- index.html
+|-- ...
+```
