@@ -8,6 +8,7 @@ function App() {
 
     <BrowserRouter>
       <Header/>
+      
       <Routes>
         <Route path="/" exact element={<Home/>} />
         {/* <Route path="/about" exact element={<About />} />
@@ -16,6 +17,7 @@ function App() {
         <Route path="/product/:id" exact element={<SingleProduct />} />
         <Route path="/cart" exact element={<Cart />} />
         <Route path="*" exact element={<Error/>} /> */}
+
 
       </Routes>
       <Footer/>

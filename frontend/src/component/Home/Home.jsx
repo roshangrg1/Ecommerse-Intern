@@ -1,5 +1,5 @@
 import React from "react";
-import Product from "../Product/Product";
+import ProductCard from "./ProductCard";
 import MetaData from "../layout/MetaData";
 const product ={
     name:"silencer",
@@ -36,12 +36,12 @@ const Home = () => {
 
       <h1 className="text-center">Featured Product</h1>
       <div id='container' className=" flex flex-wrap justify-center gap-10 ">
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
-        <Product product={product}/>
+        <ProductCard product={product}/>
+        <ProductCard product={product}/>
+        <ProductCard product={product}/>
+        <ProductCard product={product}/>
+        <ProductCard product={product}/>
+        <ProductCard product={product}/>
       </div>
     </>
   );
